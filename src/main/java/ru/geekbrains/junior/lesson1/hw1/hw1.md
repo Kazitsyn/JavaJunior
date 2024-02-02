@@ -47,15 +47,16 @@ public void cardBalancing()
 Напишите программу, которая использует Stream API для обработки списка чисел. Программа должна вывести на экран среднее значение всех четных чисел в списке.
 
 ```Java
-import java.util.ArrayList;
-import java.util.List;
-
 public class hw1 {
     public static void main(String[] args) {
         List<Integer> integerList = new ArrayList<>();
-        for (int i = 1; i < 100; i++) integerList.add(i);
+        for (int i = 1; i < 100; i++) integerList.add((int)(Math.random() * 10));
 
-        System.out.println(integerList.stream().filter(list -> list%2 == 0).toList());
+        System.out.println(integerList.stream()
+                .filter(list -> list%2 == 0)
+                .mapToInt(e -> e)
+                .average()
+                .getAsDouble());
 
     }
 }
