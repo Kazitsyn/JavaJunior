@@ -11,7 +11,7 @@ public class Person {
     }
 
     public void displayInfo(){
-        System.out.printf("Имя: %s; Возраст: %d\n%n", name, age);
+        System.out.printf("Name: %s; Age: %d\n%n", name, age);
     }
 
 }

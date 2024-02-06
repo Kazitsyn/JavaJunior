@@ -1,6 +1,7 @@
 package ru.geekbrains.junior.lesson2.task2;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class QueryBuilder {
@@ -151,12 +152,82 @@ public class QueryBuilder {
     }
 
     /**
-     * TODO: Доработать метод Delete в рамках выполнения домашней работы
+     * Метод генерации SQL запроса на удаление
      * @return
      */
-    public String buildDeleteQuery(){
-        return "";
+    public String buildDeleteQuery(Class<?> clazz, UUID primaryKey){
+        if (!clazz.isAnnotationPresent(Table.class)) return "";
+        StringBuilder query = new StringBuilder("DELETE FROM ")
+            .append(clazz.getAnnotation(Table.class).name()).append(" WHERE ");
+        Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Column.class))
+                .filter(field -> field.getAnnotation(Column.class).primaryKey())
+                .forEach(field -> query.append(field.getName()).append(" = '").append(primaryKey).append("'"));
+        return query.toString();
     }
+
+    /**
+     * Метод генерации SQL запроса на удаление
+     *
+     * @param clazz класс
+     * @param fieldValue строковое значение
+     *                   Метод обрабатывает строковое значение и определяет email или name
+     *
+     * @return
+     */
+    public String buildDeleteQuery(Class<?> clazz, String fieldValue)
+    {
+        if (!clazz.isAnnotationPresent(Table.class)) return "";
+        StringBuilder query = new StringBuilder("DELETE FROM ")
+                .append(clazz.getAnnotation(Table.class).name()).append(" WHERE ");
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Column.class)) {
+                Column columnAnnotation = field.getAnnotation(Column.class);
+                if (fieldValue.contains("@") && columnAnnotation.emailKey()) {
+                    query.append(columnAnnotation.name())
+                            .append(" = '")
+                            .append(fieldValue)
+                            .append("'");
+                    break;
+                } else if (columnAnnotation.primaryKey()) {
+                    continue;
+                }
+                else if (!fieldValue.contains("@")){
+                    query.append(columnAnnotation.name())
+                            .append(" = '")
+                            .append(fieldValue)
+                            .append("'");
+                    break;
+                }
+            }
+        }
+        return query.toString();
+    }
+
+
+    public String buildDeleteQuery(Object obj){
+        Class<?> clazz = obj.getClass();
+        if (!clazz.isAnnotationPresent(Table.class)) return "";
+        StringBuilder query = new StringBuilder("DELETE FROM ")
+                .append(clazz.getAnnotation(Table.class).name()).append(" WHERE ");
+        Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Column.class))
+                .forEach(field -> {
+                    field.setAccessible(true);
+                    Column columnAnnotation = field.getAnnotation(Column.class);
+                    try {
+                        query.append(columnAnnotation.name()).append(" = '").append(field.get(obj)).append("', ");
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        if (query.charAt(query.length() - 2) == ',') {
+            query.delete(query.length() - 2, query.length());
+        }
+        return query.toString();
+    }
+
+
 
 
 }

@@ -11,7 +11,7 @@ public class Employee {
     @Column(name = "name")
     private String username;
 
-    @Column(name = "mail")
+    @Column(name = "mail", emailKey = true)
     private String email;
 
     public Employee(String username, String email) {

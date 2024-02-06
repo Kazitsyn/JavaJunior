@@ -26,7 +26,7 @@ public class Program {
         таких как вставка, выборка, обновление и удаление.
     */
     public static void main(String[] args) throws IllegalAccessException {
-        Employee user = new Employee("Stanislav", "sample@gmail.com");
+        Employee user = new Employee("Sergey", "sample@gmail.com");
 
         QueryBuilder queryBuilder = new QueryBuilder();
 
@@ -43,6 +43,17 @@ public class Program {
         String updateQuery = queryBuilder.buildUpdateQuery(user);
         System.out.println("Update Query: " + updateQuery);
 
+        // Генерация SQL-запроса для удаления
+//        UUID pk = UUID.randomUUID();
+        String deleteQuery = queryBuilder.buildDeleteQuery(Employee.class, pk);
+        System.out.println("Delete Query: " + deleteQuery);
+
+        String deleteQuery1 = queryBuilder.buildDeleteQuery(Employee.class, "Sergey");
+        System.out.println("Delete Query: " + deleteQuery1);
+        String deleteQuery2 = queryBuilder.buildDeleteQuery(Employee.class, "sample@gmail.com");
+        System.out.println("Delete Query: " + deleteQuery2);
+        String deleteQuery3 = queryBuilder.buildDeleteQuery(user);
+        System.out.println("Delete Query: " + deleteQuery3);
     }
 
 }

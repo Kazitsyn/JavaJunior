@@ -27,7 +27,7 @@ public class Program {
         // Получить список всех полей
         Field[] fields = personalClass.getDeclaredFields();
         for (Field field : fields){
-            System.out.println("Поле: " + field.getName());
+            System.out.println("Pole: " + field.getName());
         }
 
         Constructor[] constructors = personalClass.getConstructors();

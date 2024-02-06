@@ -11,4 +11,5 @@ public @interface Column {
 
     String name();
     boolean primaryKey() default false;
+    boolean emailKey() default false;
 }
