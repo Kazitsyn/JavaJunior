@@ -226,8 +226,4 @@ public class QueryBuilder {
         }
         return query.toString();
     }
-
-
-
-
 }

@@ -4,6 +4,8 @@ public class Cat extends Animal{
     private int lives;
     public Cat() {
         lives = 9;
+        setAge(1);
+        setName("Kitty");
     }
     public void dead(){
         if (lives > 0){

@@ -5,6 +5,8 @@ private boolean inPackOfDogs;
 
     public Dog() {
         inPackOfDogs = false;
+        setAge(3);
+        setName("Bobik");
     }
 
     public boolean isInPackOfDogs() {

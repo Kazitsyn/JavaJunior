@@ -19,4 +19,16 @@ public abstract class Animal {
     public void makeSound(){
         System.out.println("Ror!");
     }
+
+    public void displayInfo(){
+        System.out.printf("Name: %s; Age: %d\n%n", name, age);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

@@ -1,7 +1,6 @@
 package ru.geekbrains.junior.lesson2.homework2;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -17,9 +16,11 @@ public class App {
         Object[] animals = new Object[]{constructorsDog[0].newInstance(null),
                                         constructorsCat[0].newInstance(null)};
         Method makeSound = animal.getDeclaredMethod("makeSound");
+        Method displayInfoMethod = animal.getDeclaredMethod("displayInfo");
         Arrays.stream(animals).forEach(a -> {
             try {
                 makeSound.invoke(a);
+                displayInfoMethod.invoke(a);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
